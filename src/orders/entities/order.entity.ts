@@ -1,4 +1,10 @@
-import { Column, DataType, PrimaryKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
 
 export enum OrderStatus {
   Approved = 'approved',
@@ -10,7 +16,7 @@ export enum OrderStatus {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-export class Order {
+export class Order extends Model {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;

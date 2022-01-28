@@ -11,10 +11,15 @@ import { OrdersModule } from './orders/orders.module';
   imports: [
     OrdersModule,
     SequelizeModule.forRoot({
-      dialect: 'sqlite',
-      host: join(__dirname, 'database.sqlite'),
+      dialect: 'mysql',
+      host: 'db',
+      port: 3306,
+      database: 'fin',
+      username: 'root',
+      password: 'root',
       models: [Order],
       autoLoadModels: true,
+      logging: false,
     }),
   ],
   controllers: [AppController],

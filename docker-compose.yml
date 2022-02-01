@@ -10,6 +10,7 @@ services:
       - .:/home/node/app
     depends_on:
       - db
+      - kafka
 
   db:
     build: ./.docker/mysql

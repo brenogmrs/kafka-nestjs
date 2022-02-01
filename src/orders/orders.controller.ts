@@ -55,10 +55,8 @@ export class OrdersController {
   async confirmPaymentConsumer(@Payload() message: KafkaMessage) {
     const { id } = message.value as any;
 
-    const updateOrder = await this.ordersService.update(id, {
+    return this.ordersService.update(id, {
       status: OrderStatus.Approved,
     });
-
-    console.log('confirmação do pagamento', updateOrder, message.value);
   }
 }

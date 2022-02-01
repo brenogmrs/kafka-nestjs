@@ -27,8 +27,6 @@ export class OrdersService {
       ],
     });
 
-    console.log('criação da order', order);
-
     return order;
   }
 

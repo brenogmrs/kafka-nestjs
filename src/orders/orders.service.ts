@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Producer } from 'kafkajs';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
@@ -9,10 +10,24 @@ export class OrdersService {
   constructor(
     @InjectModel(Order)
     private orderModel: typeof Order,
+    @Inject('KAFKA_PRODUCER')
+    private kafkaProducer: Producer,
   ) {}
 
   create(createOrder: CreateOrderDto | any): Promise<Order> {
-    return this.orderModel.create(createOrder);
+    const order = this.orderModel.create(createOrder);
+
+    this.kafkaProducer.send({
+      topic: 'payments',
+      messages: [
+        {
+          key: 'payments',
+          value: JSON.stringify(order),
+        },
+      ],
+    });
+
+    return order;
   }
 
   findAll(): Promise<Order[]> {
